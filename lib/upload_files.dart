@@ -15,6 +15,7 @@ class UploadFiles {
       "tag": data.tag == "" ? " " : data.tag,
       "file": files
     });
+
     backend.post(formData);
   }
 

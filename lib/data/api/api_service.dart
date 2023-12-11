@@ -115,8 +115,8 @@ class ApiService extends ApiInterface {
   }
 
   Future<User?> registerUser(Map<String, dynamic> data) async {
-    http.Response res =
-        await postApi(url: ApiInterface.baseUrl + EndPoints.login, data: data);
+    http.Response res = await postApi(
+        url: ApiInterface.baseUrl + EndPoints.register, data: data);
     Map<String, dynamic> response = _parseBaseResponse(res) ?? {};
     if (response.containsKey('user')) {
       PreferenceUtils.setToken(response['jwt']);

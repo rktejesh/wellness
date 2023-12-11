@@ -28,7 +28,7 @@ class _ImageUploadState extends State<ImageUpload> {
   SnackBar snackBar = SnackBar(
     content: Container(),
   );
-  late Response response;
+  late Map<String, dynamic> response;
   var dio = Dio();
   Future pickImage() async {
     final pickedFile = await picker.pickImage(
@@ -170,7 +170,7 @@ class _ImageUploadState extends State<ImageUpload> {
                         if (_imageFile != null)
                           {
                             formData = FormData.fromMap({
-                              'file': await MultipartFile.fromFile(
+                              'files': await MultipartFile.fromFile(
                                   _imageFile!.path,
                                   filename: "image")
                             }),
@@ -182,7 +182,7 @@ class _ImageUploadState extends State<ImageUpload> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ImagePlaceholder(bytes: response.data)),
+                                      ImagePlaceholder(res: response)),
                             )
                           }
                         else

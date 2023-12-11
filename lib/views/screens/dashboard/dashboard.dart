@@ -22,9 +22,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               end: Alignment.bottomCenter,
               colors: [Color(0xFF0070bc), Color(0xFF015a9f)])),
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-        ),
+        appBar: AppBar(),
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -33,7 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 decoration: BoxDecoration(
                   color: Colors.blue,
                 ),
-                child: Text('Drawer Header'),
+                child: Text(''),
               ),
               ListTile(
                 title: const Text('Logout'),

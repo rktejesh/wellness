@@ -6,6 +6,7 @@ import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:wellness/blocs/register/register_bloc.dart';
 import 'package:wellness/helper/validator.dart';
+import 'package:wellness/image.dart';
 import 'package:wellness/utils/dimensions.dart';
 import 'package:wellness/views/base/custom_button.dart';
 import 'package:wellness/views/base/custom_text_field.dart';
@@ -274,12 +275,14 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                       padding:
                           const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
                       child: customButton('REGISTER >', () {
-                        if (registerFormKey.currentState!.validate()) {
-                          // registerBloc.add(RegisterButtonPressed(formData: {
-                          //   "email": emailController.text,
-                          //   "password": passwordController.text,
-                          // }));
-                        }
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ImageUpload()));
+                        // if (registerFormKey.currentState!.validate()) {
+                        //   // registerBloc.add(RegisterButtonPressed(formData: {
+                        //   //   "email": emailController.text,
+                        //   //   "password": passwordController.text,
+                        //   // }));
+                        // }
                       }),
                     )
                   ],
