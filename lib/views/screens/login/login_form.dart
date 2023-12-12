@@ -89,8 +89,8 @@ class _LoginFormState extends State<LoginForm> {
                                     textEditingController: passwordController,
                                     textInputType:
                                         TextInputType.visiblePassword,
-                                    // CustomValidator.validatePassword,
-                                    fn: null,
+                                    // fn: CustomValidator.validatePassword,
+                                    // fn: null,
                                     obscure: true),
                               ),
                               // Padding(
@@ -154,11 +154,11 @@ class _LoginFormState extends State<LoginForm> {
                                     Dimensions.PADDING_SIZE_DEFAULT),
                                 child: RichText(
                                   text: TextSpan(
-                                    text: 'Already have an account? ',
+                                    text: 'Don\'t have an account? ',
                                     style: DefaultTextStyle.of(context).style,
                                     children: <TextSpan>[
                                       TextSpan(
-                                        text: 'Login',
+                                        text: 'Register',
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.blue,

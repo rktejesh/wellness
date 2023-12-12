@@ -125,4 +125,11 @@ class ApiService extends ApiInterface {
       return null;
     }
   }
+
+  Future<Map<String, dynamic>> predict(Map<String, dynamic> data) async {
+    http.Response res = await postApi(
+        url: ApiInterface.modelUrl + EndPoints.predict, data: data);
+    Map<String, dynamic> response = _parseBaseResponse(res) ?? {};
+    return response;
+  }
 }

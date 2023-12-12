@@ -128,11 +128,12 @@ class RegistrationFormSelection extends StatefulWidget {
 }
 
 class _RegistrationFormSelectionState extends State<RegistrationFormSelection> {
+  final RegisterBloc _registerBloc = RegisterBloc();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider<RegisterBloc>.value(
-        value: BlocProvider.of<RegisterBloc>(context),
+      body: BlocProvider<RegisterBloc>(
+        create: (context) => _registerBloc,
         child: Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: [
@@ -165,7 +166,7 @@ class _RegistrationFormSelectionState extends State<RegistrationFormSelection> {
                             context,
                             MaterialPageRoute(builder: (contextLoginScreen) {
                               return BlocProvider.value(
-                                  value: BlocProvider.of<RegisterBloc>(context),
+                                  value: _registerBloc,
                                   child: const VeterinarianRegisterForm());
                             }),
                           );
@@ -191,32 +192,6 @@ class _RegistrationFormSelectionState extends State<RegistrationFormSelection> {
                         child: customButton('Horse Breeder', () {
                           Navigator.pushNamed(context, '/breeder-register');
                         }),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(
-                            Dimensions.PADDING_SIZE_DEFAULT),
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'Don\'t have an account? ',
-                            style: DefaultTextStyle.of(context).style,
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => BlocProvider.of<AuthBloc>(context)
-                                  .add(ChangAuthMethod()),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'Register',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () =>
-                                      BlocProvider.of<AuthBloc>(context)
-                                          .add(ChangAuthMethod()),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                     ],
                   ),

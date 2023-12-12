@@ -138,7 +138,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                     Dimensions.PADDING_SIZE_DEFAULT),
                                 child: RichText(
                                   text: TextSpan(
-                                    text: 'Don\'t have an account? ',
+                                    text: 'Already have an account? ',
                                     style: DefaultTextStyle.of(context).style,
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () =>

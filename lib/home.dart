@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wellness/views/screens/dashboard/dashboard.dart';
 import 'package:wellness/views/screens/login/login_screen.dart';
+import 'package:wellness/views/screens/register/register_form_selection.dart';
 import 'package:wellness/views/screens/register/register_screen.dart';
 
 import 'blocs/auth/auth_bloc.dart';
@@ -20,7 +21,8 @@ class Home extends StatelessWidget {
         } else if (state is UnauthenticatedRegisterState) {
           return const LoginPage();
         } else if (state is AuthenticatedState) {
-          return const DashboardScreen();
+          // return const DashboardScreen();
+          return const RegistrationFormSelection();
         } else if (state is LoadingAuthenticationState) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is ErrorAuthenticationState) {

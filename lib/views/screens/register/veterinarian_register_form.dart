@@ -11,6 +11,7 @@ import 'package:wellness/utils/dimensions.dart';
 import 'package:wellness/views/base/custom_button.dart';
 import 'package:wellness/views/base/custom_text_field.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:wellness/views/screens/dashboard/dashboard.dart';
 
 class VeterinarianRegisterForm extends StatefulWidget {
   const VeterinarianRegisterForm({super.key});
@@ -86,27 +87,34 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
     );
   }
 
+  final RegisterBloc _registerBloc = RegisterBloc();
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RegisterBloc>.value(
-      value: BlocProvider.of<RegisterBloc>(context),
+    return BlocProvider<RegisterBloc>(
+      create: (context) => _registerBloc,
+      // value: BlocProvider.of<RegisterBloc>(context),
       child: Scaffold(
         body: Align(
           alignment: Alignment.center,
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.PADDING_SIZE_LARGE),
               child: Form(
                 key: registerFormKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    SizedBox(
+                      height: 100,
+                    ),
                     Row(
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(
-                                Dimensions.PADDING_SIZE_DEFAULT),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                                vertical: Dimensions.PADDING_SIZE_SMALL),
                             child: CustomTextFormField(
                                 title: 'FIRST NAME',
                                 textEditingController: emailController,
@@ -117,8 +125,9 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(
-                                Dimensions.PADDING_SIZE_DEFAULT),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                                vertical: Dimensions.PADDING_SIZE_SMALL),
                             child: CustomTextFormField(
                                 title: 'LAST NAME',
                                 textEditingController: emailController,
@@ -130,8 +139,9 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                       ],
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                          vertical: Dimensions.PADDING_SIZE_SMALL),
                       child: CustomTextFormField(
                           title: 'EMAIL',
                           textEditingController: emailController,
@@ -140,8 +150,9 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                           obscure: false),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                          vertical: Dimensions.PADDING_SIZE_SMALL),
                       child: CustomTextFormField(
                           title: 'PASSWORD',
                           textEditingController: passwordController,
@@ -151,8 +162,9 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                           obscure: true),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                          vertical: Dimensions.PADDING_SIZE_SMALL),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -180,8 +192,9 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                          vertical: Dimensions.PADDING_SIZE_SMALL),
                       child: CustomTextFormField(
                           title: 'FACILITY NAME',
                           textEditingController: emailController,
@@ -190,9 +203,11 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                           obscure: false),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                          vertical: Dimensions.PADDING_SIZE_SMALL),
                       child: DropdownMenu<String>(
+                        menuStyle: MenuStyle(),
                         initialSelection: list.first,
                         onSelected: (String? value) {
                           setState(() {
@@ -207,8 +222,9 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                          vertical: Dimensions.PADDING_SIZE_SMALL),
                       child: CustomTextFormField(
                         title: 'ADDRESS LINE 1',
                         textEditingController: address1Controller,
@@ -219,16 +235,18 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                          vertical: Dimensions.PADDING_SIZE_SMALL),
                       child: CustomTextFormField(
                         title: 'ADDRESS LINE 2',
                         textEditingController: address2Controller,
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                          vertical: Dimensions.PADDING_SIZE_SMALL),
                       child: CustomTextFormField(
                         title: "SELECT COUNTRY",
                         onTap: showCountryPickerBottomSheet,
@@ -237,8 +255,9 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                          vertical: Dimensions.PADDING_SIZE_SMALL),
                       child: CustomTextFormField(
                         title: "SELECT CITY",
                         textEditingController: cityController,
@@ -249,8 +268,9 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(
-                                Dimensions.PADDING_SIZE_DEFAULT),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                                vertical: Dimensions.PADDING_SIZE_SMALL),
                             child: CustomTextFormField(
                               textEditingController: stateController,
                               readOnly: true,
@@ -260,8 +280,9 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(
-                                Dimensions.PADDING_SIZE_DEFAULT),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                                vertical: Dimensions.PADDING_SIZE_SMALL),
                             child: CustomTextFormField(
                               title: 'POSTAL CODE',
                               readOnly: true,
@@ -272,11 +293,12 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                       ],
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                          vertical: Dimensions.PADDING_SIZE_SMALL),
                       child: customButton('REGISTER >', () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ImageUpload()));
+                            builder: (context) => const DashboardScreen()));
                         // if (registerFormKey.currentState!.validate()) {
                         //   // registerBloc.add(RegisterButtonPressed(formData: {
                         //   //   "email": emailController.text,

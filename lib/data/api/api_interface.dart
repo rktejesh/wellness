@@ -4,7 +4,7 @@ abstract class ApiInterface {
   //static const oldbaseUrl = "https://wahine.netgains.org/api/";
   //static const oldimgPath = "https://wahine.netgains.org/";
   static const baseUrl = "http://wellness.netgains.org/api/";
-  static const imgPath = "https://ehoa.app/";
+  static const modelUrl = "http://wellness.netgains.org/ml/";
   static String? auth = PreferenceUtils.getString('token') ?? "";
 
   Future getApi({

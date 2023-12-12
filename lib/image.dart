@@ -170,6 +170,7 @@ class _ImageUploadState extends State<ImageUpload> {
                         if (_imageFile != null)
                           {
                             formData = FormData.fromMap({
+                              'path': 'images',
                               'files': await MultipartFile.fromFile(
                                   _imageFile!.path,
                                   filename: "image")
@@ -187,6 +188,9 @@ class _ImageUploadState extends State<ImageUpload> {
                           }
                         else
                           {
+                            setState(() {
+                              isLoading = false;
+                            }),
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('Image not selected')),
