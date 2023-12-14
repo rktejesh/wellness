@@ -63,7 +63,6 @@ dependencies:
   google_maps_webservice: ^0.0.20-nullsafety.5
   google_api_headers: ^1.6.0
   geocoding: ^2.1.1
-  geolocator: ^10.1.0
 
 dev_dependencies:
   flutter_test:

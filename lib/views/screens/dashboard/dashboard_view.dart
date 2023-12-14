@@ -5,6 +5,7 @@ import 'package:wellness/blocs/auth/auth_bloc.dart';
 import 'package:wellness/image.dart';
 import 'package:wellness/utils/dimensions.dart';
 import 'package:wellness/views/screens/dashboard/circular_icon_button.dart';
+import 'package:wellness/views/screens/instructions/instructions.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
@@ -85,7 +86,8 @@ class DashboardView extends StatelessWidget {
                           label: "TEST",
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const ImageUpload()));
+                                builder: (context) =>
+                                    const InstructionScreen()));
                           },
                         ),
                       ),

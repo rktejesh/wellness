@@ -4,7 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart' as geo;
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:wellness/blocs/dashboard/dashboard_bloc.dart';
 import 'package:wellness/blocs/register/register_bloc.dart';
+import 'package:wellness/blocs/register_form/register_form_bloc.dart';
+import 'package:wellness/data/model/veterinarian.dart';
 import 'package:wellness/helper/validator.dart';
 import 'package:wellness/image.dart';
 import 'package:wellness/utils/dimensions.dart';
@@ -26,7 +29,7 @@ const String kGoogleApiKey = "AIzaSyAPNs4LbF8a3SJSG7O6O9Ue_M61inmaBe0";
 
 class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
   final registerFormKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController facilityNameController = TextEditingController();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -93,223 +96,269 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RegisterBloc>.value(
-      value: BlocProvider.of<RegisterBloc>(context),
-      child: Scaffold(
-        appBar: AppBar(),
-        body: Align(
-          alignment: Alignment.center,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: Dimensions.PADDING_SIZE_LARGE),
-              child: Form(
-                key: registerFormKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
+    return BlocProvider<RegisterFormBloc>.value(
+      value: BlocProvider.of<RegisterFormBloc>(context),
+      child: BlocConsumer<RegisterFormBloc, RegistrationFormState>(
+        listener: (context, state) {
+          if (state is RegistrationFormSuccess) {
+            BlocProvider.of<DashboardBloc>(context).add(DashboardFetchData());
+          } else if (state is RegistrationFormFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Align(
+              alignment: Alignment.center,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.PADDING_SIZE_LARGE),
+                  child: Form(
+                    key: registerFormKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                                    vertical: Dimensions.PADDING_SIZE_SMALL),
+                                child: CustomTextFormField(
+                                    title: 'FIRST NAME',
+                                    textEditingController: firstNameController,
+                                    textInputType: TextInputType.emailAddress,
+                                    // fn: CustomValidator.validateEmail,
+                                    obscure: false),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                                    vertical: Dimensions.PADDING_SIZE_SMALL),
+                                child: CustomTextFormField(
+                                    title: 'LAST NAME',
+                                    textEditingController: lastNameController,
+                                    textInputType: TextInputType.emailAddress,
+                                    // fn: CustomValidator.validateEmail,
+                                    obscure: false),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                              vertical: Dimensions.PADDING_SIZE_SMALL),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 70,
+                                child: CustomTextFormField(
+                                  onTap: showCountryCodePickerBottomSheet,
+                                  textEditingController: countryCodeController,
+                                  prefix: const Text('+'),
+                                  readOnly: true,
+                                  title: "+1",
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: CustomTextFormField(
+                                  textEditingController: phoneNumberController,
+                                  title: 'Phone Number',
+                                  textAlign: TextAlign.left,
+                                  textInputType: TextInputType.number,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                              vertical: Dimensions.PADDING_SIZE_SMALL),
+                          child: CustomTextFormField(
+                              title: 'FACILITY NAME',
+                              textEditingController: facilityNameController,
+                              textInputType: TextInputType.emailAddress,
+                              // fn: CustomValidator.validateEmail,
+                              obscure: false),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                              vertical: Dimensions.PADDING_SIZE_SMALL),
+                          child: Text(
+                              "How many veterinarians are employed at this facility?"),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(
+                              Dimensions.PADDING_SIZE_DEFAULT),
+                          child: DropdownButton<int>(
+                            value: selectedValue,
+                            isExpanded: true,
+                            items: List.generate(100, (index) => index + 1)
+                                .map((int value) {
+                              return DropdownMenuItem<int>(
+                                value: value,
+                                child: Text('$value'),
+                              );
+                            }).toList(),
+                            onChanged: (int? newValue) {
+                              setState(() {
+                                selectedValue = newValue ?? 1;
+                              });
+                            },
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                              vertical: Dimensions.PADDING_SIZE_SMALL),
+                          child: Text("Type of veterinary facility?"),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                              vertical: Dimensions.PADDING_SIZE_SMALL),
+                          child: DropdownButton<String>(
+                            value: dropdownValue,
+                            isExpanded: true,
+                            onChanged: (String? value) {
+                              setState(() {
+                                dropdownValue = value ?? "";
+                              });
+                            },
+                            items: list
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                  value: value, child: Text(value));
+                            }).toList(),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                              vertical: Dimensions.PADDING_SIZE_SMALL),
+                          child: CustomTextFormField(
+                            title: 'ADDRESS LINE 1',
+                            textEditingController: address1Controller,
+                            readOnly: true,
+                            onTap: () {
+                              handlePressButton(context);
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                              vertical: Dimensions.PADDING_SIZE_SMALL),
+                          child: CustomTextFormField(
+                            title: 'ADDRESS LINE 2',
+                            textEditingController: address2Controller,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                              vertical: Dimensions.PADDING_SIZE_SMALL),
+                          child: CustomTextFormField(
+                            title: "SELECT COUNTRY",
+                            onTap: showCountryPickerBottomSheet,
+                            textEditingController: countryNameController,
+                            readOnly: true,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                              vertical: Dimensions.PADDING_SIZE_SMALL),
+                          child: CustomTextFormField(
+                            title: "SELECT CITY",
+                            textEditingController: cityController,
+                            readOnly: true,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                                    vertical: Dimensions.PADDING_SIZE_SMALL),
+                                child: CustomTextFormField(
+                                  textEditingController: stateController,
+                                  readOnly: true,
+                                  title: 'STATE',
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: Dimensions.PADDING_SIZE_DEFAULT,
+                                    vertical: Dimensions.PADDING_SIZE_SMALL),
+                                child: CustomTextFormField(
+                                  title: 'POSTAL CODE',
+                                  readOnly: true,
+                                  textEditingController: postalCodeController,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Align(
+                          alignment: Alignment.center,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: Dimensions.PADDING_SIZE_DEFAULT,
                                 vertical: Dimensions.PADDING_SIZE_SMALL),
-                            child: CustomTextFormField(
-                                title: 'FIRST NAME',
-                                textEditingController: firstNameController,
-                                textInputType: TextInputType.emailAddress,
-                                // fn: CustomValidator.validateEmail,
-                                obscure: false),
+                            child: customButton('REGISTER >', () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const DashboardView()));
+                              if (registerFormKey.currentState!.validate()) {
+                                Veterinarian vet = Veterinarian(
+                                    facilityName: facilityNameController.text,
+                                    country: countryCodeController.text,
+                                    city: cityController.text,
+                                    state: stateController.text,
+                                    address1: address1Controller.text,
+                                    address2: address2Controller.text,
+                                    postalCode: postalCodeController.text,
+                                    firstName: firstNameController.text,
+                                    lastName: lastNameController.text,
+                                    veterinariansCount: selectedValue,
+                                    typeOfFacility: dropdownValue);
+                                context.read<RegisterFormBloc>().add(
+                                    RegisterFormButtonPressed(
+                                        formData: vet.toMap()));
+                              }
+                            }),
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                                vertical: Dimensions.PADDING_SIZE_SMALL),
-                            child: CustomTextFormField(
-                                title: 'LAST NAME',
-                                textEditingController: lastNameController,
-                                textInputType: TextInputType.emailAddress,
-                                // fn: CustomValidator.validateEmail,
-                                obscure: false),
-                          ),
-                        ),
+                        const SizedBox(
+                          height: 40,
+                        )
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                          vertical: Dimensions.PADDING_SIZE_SMALL),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 70,
-                            child: CustomTextFormField(
-                              onTap: showCountryCodePickerBottomSheet,
-                              textEditingController: countryCodeController,
-                              prefix: const Text('+'),
-                              readOnly: true,
-                              title: "+1",
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: CustomTextFormField(
-                              textEditingController: phoneNumberController,
-                              title: 'Phone Number',
-                              textAlign: TextAlign.left,
-                              textInputType: TextInputType.number,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                          vertical: Dimensions.PADDING_SIZE_SMALL),
-                      child: CustomTextFormField(
-                          title: 'FACILITY NAME',
-                          textEditingController: emailController,
-                          textInputType: TextInputType.emailAddress,
-                          // fn: CustomValidator.validateEmail,
-                          obscure: false),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
-                      child: DropdownButton<int>(
-                        value: selectedValue,
-                        isExpanded: true,
-                        items: List.generate(100, (index) => index + 1)
-                            .map((int value) {
-                          return DropdownMenuItem<int>(
-                            value: value,
-                            child: Text('$value'),
-                          );
-                        }).toList(),
-                        onChanged: (int? newValue) {
-                          setState(() {
-                            selectedValue = newValue ?? 1;
-                          });
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                          vertical: Dimensions.PADDING_SIZE_SMALL),
-                      child: DropdownButton<String>(
-                        value: dropdownValue,
-                        isExpanded: true,
-                        onChanged: (String? value) {
-                          setState(() {
-                            dropdownValue = value ?? "";
-                          });
-                        },
-                        items:
-                            list.map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                              value: value, child: Text(value));
-                        }).toList(),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                          vertical: Dimensions.PADDING_SIZE_SMALL),
-                      child: CustomTextFormField(
-                        title: 'ADDRESS LINE 1',
-                        textEditingController: address1Controller,
-                        readOnly: true,
-                        onTap: () {
-                          handlePressButton(context);
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                          vertical: Dimensions.PADDING_SIZE_SMALL),
-                      child: CustomTextFormField(
-                        title: 'ADDRESS LINE 2',
-                        textEditingController: address2Controller,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                          vertical: Dimensions.PADDING_SIZE_SMALL),
-                      child: CustomTextFormField(
-                        title: "SELECT COUNTRY",
-                        onTap: showCountryPickerBottomSheet,
-                        textEditingController: countryNameController,
-                        readOnly: true,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                          vertical: Dimensions.PADDING_SIZE_SMALL),
-                      child: CustomTextFormField(
-                        title: "SELECT CITY",
-                        textEditingController: cityController,
-                        readOnly: true,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                                vertical: Dimensions.PADDING_SIZE_SMALL),
-                            child: CustomTextFormField(
-                              textEditingController: stateController,
-                              readOnly: true,
-                              title: 'STATE',
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                                vertical: Dimensions.PADDING_SIZE_SMALL),
-                            child: CustomTextFormField(
-                              title: 'POSTAL CODE',
-                              readOnly: true,
-                              textEditingController: postalCodeController,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                          vertical: Dimensions.PADDING_SIZE_SMALL),
-                      child: customButton('REGISTER >', () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const DashboardView()));
-                        // if (registerFormKey.currentState!.validate()) {
-                        //   // registerBloc.add(RegisterButtonPressed(formData: {
-                        //   //   "email": emailController.text,
-                        //   //   "password": passwordController.text,
-                        //   // }));
-                        // }
-                      }),
-                    )
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -336,6 +385,7 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
           postalCodeController.text = placemark.postalCode ?? "";
           cityController.text = placemark.locality ?? "";
           stateController.text = placemark.administrativeArea ?? "";
+          countryNameController.text = placemark.country ?? "";
         }
       } else {
         // c.showLocLoader = false;

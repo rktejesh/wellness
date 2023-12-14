@@ -44,8 +44,6 @@ PODS:
   - FMDB/standard (2.7.5)
   - geocoding_ios (1.0.5):
     - Flutter
-  - geolocator_apple (1.2.0):
-    - Flutter
   - image_cropper (0.0.4):
     - Flutter
     - TOCropViewController (~> 2.6.1)
@@ -78,7 +76,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
-  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -108,8 +105,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   geocoding_ios:
     :path: ".symlinks/plugins/geocoding_ios/ios"
-  geolocator_apple:
-    :path: ".symlinks/plugins/geolocator_apple/ios"
   image_cropper:
     :path: ".symlinks/plugins/image_cropper/ios"
   image_picker_ios:
@@ -134,7 +129,6 @@ SPEC CHECKSUMS:
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geocoding_ios: a389ea40f6f548de6e63006a2e31bf66ff80769a
-  geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
   image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85

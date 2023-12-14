@@ -110,8 +110,9 @@ class ApiService extends ApiInterface {
         await postApi(url: ApiInterface.baseUrl + EndPoints.login, data: data);
     Map<String, dynamic> response = _parseBaseResponse(res) ?? {};
     if (response.containsKey('user')) {
-      await PreferenceUtils.setToken(response['jwt']);
-      return User.fromMap(response['user']);
+      return await PreferenceUtils.setToken(response['jwt']).then((value) {
+        return User.fromMap(response['user']);
+      });
     } else {
       return null;
     }
