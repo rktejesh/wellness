@@ -14,7 +14,10 @@ Widget customButton(String title, void Function()? onPressed) {
           padding: const EdgeInsets.symmetric(
               horizontal: Dimensions.PADDING_SIZE_EXTRA_EXTRA_LARGE,
               vertical: Dimensions.PADDING_SIZE_DEFAULT),
-          child: Text(title),
+          child: Text(
+            title,
+            style: const TextStyle(color: Colors.white),
+          ),
         )),
   );
 }

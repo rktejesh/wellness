@@ -117,6 +117,9 @@ import 'package:wellness/blocs/auth/auth_bloc.dart';
 import 'package:wellness/blocs/register/register_bloc.dart';
 import 'package:wellness/utils/dimensions.dart';
 import 'package:wellness/views/base/custom_button.dart';
+import 'package:wellness/views/screens/register/breeder_register_form.dart';
+import 'package:wellness/views/screens/register/owner_register_form.dart';
+import 'package:wellness/views/screens/register/trainer_register_form.dart';
 import 'package:wellness/views/screens/register/veterinarian_register_form.dart';
 
 class RegistrationFormSelection extends StatefulWidget {
@@ -157,6 +160,11 @@ class _RegistrationFormSelectionState extends State<RegistrationFormSelection> {
                   padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
                   child: Column(
                     children: [
+                      const Padding(
+                        padding:
+                            EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                        child: Text("Select the box that best describes you: "),
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(
                             Dimensions.PADDING_SIZE_DEFAULT),
@@ -176,21 +184,45 @@ class _RegistrationFormSelectionState extends State<RegistrationFormSelection> {
                         padding: const EdgeInsets.all(
                             Dimensions.PADDING_SIZE_DEFAULT),
                         child: customButton('Horse Owner', () {
-                          Navigator.pushNamed(context, '/owner-register');
+                          // Navigator.pushNamed(context, '/owner-register');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (contextLoginScreen) {
+                              return BlocProvider.value(
+                                  value: _registerBloc,
+                                  child: const OwnerRegisterForm());
+                            }),
+                          );
                         }),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(
                             Dimensions.PADDING_SIZE_DEFAULT),
                         child: customButton('Horse Trainer', () {
-                          Navigator.pushNamed(context, '/trainer-register');
+                          // Navigator.pushNamed(context, '/trainer-register');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (contextLoginScreen) {
+                              return BlocProvider.value(
+                                  value: _registerBloc,
+                                  child: const TrainerRegisterForm());
+                            }),
+                          );
                         }),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(
                             Dimensions.PADDING_SIZE_DEFAULT),
                         child: customButton('Horse Breeder', () {
-                          Navigator.pushNamed(context, '/breeder-register');
+                          // Navigator.pushNamed(context, '/breeder-register');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (contextLoginScreen) {
+                              return BlocProvider.value(
+                                  value: _registerBloc,
+                                  child: const BreederRegisterForm());
+                            }),
+                          );
                         }),
                       ),
                     ],

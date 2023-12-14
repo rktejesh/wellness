@@ -12,6 +12,7 @@ import 'package:wellness/views/base/custom_button.dart';
 import 'package:wellness/views/base/custom_text_field.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:wellness/views/screens/dashboard/dashboard.dart';
+import 'package:wellness/views/screens/dashboard/dashboard_view.dart';
 
 class VeterinarianRegisterForm extends StatefulWidget {
   const VeterinarianRegisterForm({super.key});
@@ -26,6 +27,8 @@ const String kGoogleApiKey = "AIzaSyAPNs4LbF8a3SJSG7O6O9Ue_M61inmaBe0";
 class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
   final registerFormKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController countryNameController = TextEditingController();
   final TextEditingController countryCodeController = TextEditingController();
@@ -41,6 +44,7 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
   final GoogleMapsPlaces _places =
       GoogleMapsPlaces(apiKey: "AIzaSyAPNs4LbF8a3SJSG7O6O9Ue_M61inmaBe0");
   bool showLocLoader = true;
+  int selectedValue = 1;
 
   static const List<String> list = <String>[
     "Equine",
@@ -87,13 +91,12 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
     );
   }
 
-  final RegisterBloc _registerBloc = RegisterBloc();
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<RegisterBloc>(
-      create: (context) => _registerBloc,
-      // value: BlocProvider.of<RegisterBloc>(context),
+    return BlocProvider<RegisterBloc>.value(
+      value: BlocProvider.of<RegisterBloc>(context),
       child: Scaffold(
+        appBar: AppBar(),
         body: Align(
           alignment: Alignment.center,
           child: SingleChildScrollView(
@@ -105,9 +108,6 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 100,
-                    ),
                     Row(
                       children: [
                         Expanded(
@@ -117,9 +117,9 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                                 vertical: Dimensions.PADDING_SIZE_SMALL),
                             child: CustomTextFormField(
                                 title: 'FIRST NAME',
-                                textEditingController: emailController,
+                                textEditingController: firstNameController,
                                 textInputType: TextInputType.emailAddress,
-                                fn: CustomValidator.validateEmail,
+                                // fn: CustomValidator.validateEmail,
                                 obscure: false),
                           ),
                         ),
@@ -130,36 +130,13 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                                 vertical: Dimensions.PADDING_SIZE_SMALL),
                             child: CustomTextFormField(
                                 title: 'LAST NAME',
-                                textEditingController: emailController,
+                                textEditingController: lastNameController,
                                 textInputType: TextInputType.emailAddress,
-                                fn: CustomValidator.validateEmail,
+                                // fn: CustomValidator.validateEmail,
                                 obscure: false),
                           ),
                         ),
                       ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                          vertical: Dimensions.PADDING_SIZE_SMALL),
-                      child: CustomTextFormField(
-                          title: 'EMAIL',
-                          textEditingController: emailController,
-                          textInputType: TextInputType.emailAddress,
-                          fn: CustomValidator.validateEmail,
-                          obscure: false),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Dimensions.PADDING_SIZE_DEFAULT,
-                          vertical: Dimensions.PADDING_SIZE_SMALL),
-                      child: CustomTextFormField(
-                          title: 'PASSWORD',
-                          textEditingController: passwordController,
-                          textInputType: TextInputType.visiblePassword,
-                          // fn: CustomValidator.validatePassword,
-                          fn: null,
-                          obscure: true),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -176,7 +153,7 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                               textEditingController: countryCodeController,
                               prefix: const Text('+'),
                               readOnly: true,
-                              title: "+",
+                              title: "+1",
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -199,25 +176,45 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                           title: 'FACILITY NAME',
                           textEditingController: emailController,
                           textInputType: TextInputType.emailAddress,
-                          fn: CustomValidator.validateEmail,
+                          // fn: CustomValidator.validateEmail,
                           obscure: false),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                      child: DropdownButton<int>(
+                        value: selectedValue,
+                        isExpanded: true,
+                        items: List.generate(100, (index) => index + 1)
+                            .map((int value) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text('$value'),
+                          );
+                        }).toList(),
+                        onChanged: (int? newValue) {
+                          setState(() {
+                            selectedValue = newValue ?? 1;
+                          });
+                        },
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: Dimensions.PADDING_SIZE_DEFAULT,
                           vertical: Dimensions.PADDING_SIZE_SMALL),
-                      child: DropdownMenu<String>(
-                        menuStyle: MenuStyle(),
-                        initialSelection: list.first,
-                        onSelected: (String? value) {
+                      child: DropdownButton<String>(
+                        value: dropdownValue,
+                        isExpanded: true,
+                        onChanged: (String? value) {
                           setState(() {
-                            dropdownValue = value!;
+                            dropdownValue = value ?? "";
                           });
                         },
-                        dropdownMenuEntries:
-                            list.map<DropdownMenuEntry<String>>((String value) {
-                          return DropdownMenuEntry<String>(
-                              value: value, label: value);
+                        items:
+                            list.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                              value: value, child: Text(value));
                         }).toList(),
                       ),
                     ),
@@ -298,7 +295,7 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                           vertical: Dimensions.PADDING_SIZE_SMALL),
                       child: customButton('REGISTER >', () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const DashboardScreen()));
+                            builder: (context) => const DashboardView()));
                         // if (registerFormKey.currentState!.validate()) {
                         //   // registerBloc.add(RegisterButtonPressed(formData: {
                         //   //   "email": emailController.text,

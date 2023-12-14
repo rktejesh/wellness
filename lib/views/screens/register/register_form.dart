@@ -26,23 +26,21 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
-    final registerBloc = BlocProvider.of<RegisterBloc>(context);
-    return BlocListener<RegisterBloc, RegistrationState>(
-      bloc: registerBloc,
-      listener: (context, state) {
-        if (state is RegistrationSuccess) {
-          BlocProvider.of<AuthBloc>(context).add(UserUpdated(state.user));
-        } else if (state is RegistrationFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.error),
-            ),
-          );
-        }
-      },
-      child: BlocBuilder<RegisterBloc, RegistrationState>(
-          bloc: registerBloc,
-          builder: (context, state) {
+    return BlocProvider(
+        create: (context) => RegisterBloc(),
+        child: Scaffold(
+          body: BlocConsumer<RegisterBloc, RegistrationState>(
+              listener: (context, state) {
+            if (state is RegistrationSuccess) {
+              BlocProvider.of<AuthBloc>(context).add(UserUpdated(state.user));
+            } else if (state is RegistrationFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.error),
+                ),
+              );
+            }
+          }, builder: (context, state) {
             if (state is RegistrationLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
@@ -88,7 +86,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                 padding: const EdgeInsets.all(
                                     Dimensions.PADDING_SIZE_DEFAULT),
                                 child: CustomTextFormField(
-                                    title: 'USERNAME',
+                                    title: 'FULL NAME',
                                     textEditingController: usernameController,
                                     textInputType: TextInputType.name,
                                     // fn: CustomValidator.validateEmail,
@@ -115,7 +113,15 @@ class _RegisterFormState extends State<RegisterForm> {
                                     textInputType:
                                         TextInputType.visiblePassword,
                                     // CustomValidator.validatePassword,
-                                    fn: null,
+                                    fn: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please confirm your password';
+                                      } else if (value !=
+                                          passwordController.text) {
+                                        return 'Passwords do not match';
+                                      }
+                                      return null;
+                                    },
                                     obscure: true),
                               ),
                               Padding(
@@ -124,12 +130,13 @@ class _RegisterFormState extends State<RegisterForm> {
                                 child: customButton('Register', () {
                                   if (registerFormKey.currentState!
                                       .validate()) {
-                                    registerBloc
+                                    context
+                                        .read<RegisterBloc>()
                                         .add(RegisterButtonPressed(formData: {
-                                      "email": emailController.text,
-                                      "password": passwordController.text,
-                                      "username": usernameController.text
-                                    }));
+                                          "email": emailController.text,
+                                          "password": passwordController.text,
+                                          "username": usernameController.text
+                                        }));
                                   }
                                 }),
                               ),
@@ -170,6 +177,6 @@ class _RegisterFormState extends State<RegisterForm> {
               );
             }
           }),
-    );
+        ));
   }
 }

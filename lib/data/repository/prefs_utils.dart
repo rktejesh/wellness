@@ -21,12 +21,10 @@ class PreferenceUtils {
   }
 
   static Future<bool> setToken(String value) async {
-    var prefs = await _instance;
-    return prefs.setString('token', value);
+    return _prefsInstance.setString('token', value);
   }
 
   static Future<bool> setString(String key, String value) async {
-    var prefs = await _instance;
-    return prefs.setString(key, value);
+    return _prefsInstance.setString(key, value);
   }
 }

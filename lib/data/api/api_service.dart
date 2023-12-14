@@ -28,6 +28,7 @@ class ApiService extends ApiInterface {
   Future getApi({
     String? url,
     Map<String, String>? headers,
+    bool? require = true,
   }) async {
     var client = http.Client();
     final response = await client.get(Uri.parse(url!),
@@ -35,17 +36,18 @@ class ApiService extends ApiInterface {
             <String, String>{
               'accept': 'application/json',
               'content-type': 'application/json',
-              'authorization': ApiInterface.auth!
+              'Authorization': "Bearer ${ApiInterface.auth!}"
             });
     return response;
   }
 
   @override
-  Future postApi(
-      {String? url,
-      Map<String, String>? headers,
-      Map? data,
-      bool? require = true}) async {
+  Future postApi({
+    String? url,
+    Map<String, String>? headers,
+    Map? data,
+    bool? require = false,
+  }) async {
     var client = http.Client();
     print(data);
     if (PreferenceUtils.getToken() != null) {
@@ -59,10 +61,11 @@ class ApiService extends ApiInterface {
             <String, String>{
               'accept': 'application/json',
               'content-type': 'application/json',
-              'authorization': ApiInterface.auth!
+              'Authorization': (require != null && require)
+                  ? "Bearer ${ApiInterface.auth!}"
+                  : ""
             },
         body: jsonEncode(data));
-
     return res;
   }
 
@@ -107,7 +110,7 @@ class ApiService extends ApiInterface {
         await postApi(url: ApiInterface.baseUrl + EndPoints.login, data: data);
     Map<String, dynamic> response = _parseBaseResponse(res) ?? {};
     if (response.containsKey('user')) {
-      PreferenceUtils.setToken(response['jwt']);
+      await PreferenceUtils.setToken(response['jwt']);
       return User.fromMap(response['user']);
     } else {
       return null;
@@ -119,8 +122,32 @@ class ApiService extends ApiInterface {
         url: ApiInterface.baseUrl + EndPoints.register, data: data);
     Map<String, dynamic> response = _parseBaseResponse(res) ?? {};
     if (response.containsKey('user')) {
-      PreferenceUtils.setToken(response['jwt']);
+      await PreferenceUtils.setToken(response['jwt']);
       return User.fromMap(response['user']);
+    } else {
+      return null;
+    }
+  }
+
+  Future<String?> getProfile() async {
+    http.Response res = await getApi(
+        url: ApiInterface.baseUrl + EndPoints.getProfile, require: true);
+    Map<String, dynamic> response = _parseBaseResponse(res) ?? {};
+    if (response.containsKey('role')) {
+      return response['role'].toString();
+    } else {
+      return null;
+    }
+  }
+
+  Future<String?> setProfile(Map<String, dynamic> data) async {
+    http.Response res = await postApi(
+        url: ApiInterface.baseUrl + EndPoints.getProfile,
+        data: data,
+        require: true);
+    Map<String, dynamic> response = _parseBaseResponse(res) ?? {};
+    if (response["entry"].containsKey('role')) {
+      return response['role'].toString();
     } else {
       return null;
     }

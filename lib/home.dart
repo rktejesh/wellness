@@ -21,8 +21,8 @@ class Home extends StatelessWidget {
         } else if (state is UnauthenticatedRegisterState) {
           return const LoginPage();
         } else if (state is AuthenticatedState) {
-          // return const DashboardScreen();
-          return const RegistrationFormSelection();
+          return const DashboardScreen();
+          // return const RegistrationFormSelection();
         } else if (state is LoadingAuthenticationState) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is ErrorAuthenticationState) {

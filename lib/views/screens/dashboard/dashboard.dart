@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:wellness/blocs/auth/auth_bloc.dart';
-import 'package:wellness/image.dart';
-import 'package:wellness/utils/dimensions.dart';
+import 'package:wellness/blocs/dashboard/dashboard_bloc.dart';
+import 'package:wellness/views/screens/dashboard/dashboard_view.dart';
+import 'package:wellness/views/screens/register/register_form.dart';
+import 'package:wellness/views/screens/register/register_form_selection.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -15,161 +16,48 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFF0070bc), Color(0xFF015a9f)])),
-      child: Scaffold(
-        appBar: AppBar(),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text(''),
-              ),
-              ListTile(
-                title: const Text('Logout'),
-                onTap: () {
-                  BlocProvider.of<AuthBloc>(context).add(LoggedOut());
-                },
-              ),
-            ],
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        body: Stack(
-          children: [
-            Align(
-              alignment: AlignmentDirectional.bottomCenter,
-              child: SizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.all(
-                      Dimensions.PADDING_SIZE_EXTRA_EXTRA_LARGE),
-                  child: SvgPicture.asset(
-                    'assets/svg/logo.svg',
-                    width: MediaQuery.of(context).size.width * 0.2,
+    return BlocProvider(
+      create: (context) => DashboardBloc()..add(DashboardFetchData()),
+      child: BlocBuilder<DashboardBloc, DashboardState>(
+        builder: (context, state) {
+          if (state is DashboardLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is DashboardLoaded) {
+            if (state.data == "NA") {
+              return const RegistrationFormSelection();
+            } else {
+              return const DashboardView();
+            }
+          } else if (state is DashboardFailure) {
+            /// TODO
+            return Scaffold(
+                appBar: AppBar(),
+                drawer: Drawer(
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      const DrawerHeader(
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                        ),
+                        child: Text(''),
+                      ),
+                      ListTile(
+                        title: const Text('Logout'),
+                        onTap: () {
+                          BlocProvider.of<AuthBloc>(context).add(LoggedOut());
+                        },
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ),
-            Align(
-              alignment: AlignmentDirectional.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      width: MediaQuery.of(context).size.height * 0.2,
-                      child: FittedBox(
-                        child: FloatingActionButton.large(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const ImageUpload()));
-                          },
-                          shape: const CircleBorder(),
-                          backgroundColor: Colors.white,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(
-                                    Dimensions.PADDING_SIZE_DEFAULT),
-                                child: Image.asset(
-                                  "assets/images/test.png",
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                ),
-                              ),
-                              Text(
-                                'TEST',
-                                style: TextStyle(
-                                    color: Color(0xFF0070bc),
-                                    fontSize: Dimensions.fontSizeDefault),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      width: MediaQuery.of(context).size.height * 0.2,
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: FloatingActionButton.large(
-                          onPressed: () {},
-                          shape: const CircleBorder(),
-                          backgroundColor: Colors.white,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                "assets/images/track.png",
-                                width:
-                                    MediaQuery.of(context).size.height * 0.05,
-                              ),
-                              Text(
-                                'TRACK',
-                                style: TextStyle(
-                                    color: const Color(0xFF0070bc),
-                                    fontSize: Dimensions.fontSizeExtraSmall),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      width: MediaQuery.of(context).size.height * 0.2,
-                      child: FittedBox(
-                        child: FloatingActionButton.large(
-                          onPressed: () {},
-                          shape: const CircleBorder(),
-                          backgroundColor: Colors.white,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(
-                                    Dimensions.PADDING_SIZE_DEFAULT),
-                                child: Image.asset(
-                                  "assets/images/shop.png",
-                                  width:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                ),
-                              ),
-                              Text(
-                                'SHOP',
-                                style: TextStyle(
-                                    color: const Color(0xFF0070bc),
-                                    fontSize: Dimensions.fontSizeExtraSmall),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+                body: Container());
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }
