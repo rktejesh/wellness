@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
+import 'package:wellness/blocs/dashboard/dashboard_bloc.dart';
 import 'package:wellness/splash_screen.dart';
 import 'package:wellness/utils/app_constants.dart';
 import 'package:wellness/views/screens/dashboard/dashboard.dart';
@@ -52,6 +53,9 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider(
           create: (context) => authBloc,
+        ),
+        BlocProvider(
+          create: (context) => DashboardBloc()..add(DashboardFetchData()),
         ),
       ],
       child: ScreenUtilInit(

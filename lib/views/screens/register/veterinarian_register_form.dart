@@ -268,6 +268,7 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                           child: CustomTextFormField(
                             title: 'ADDRESS LINE 2',
                             textEditingController: address2Controller,
+                            fn: CustomValidator.defaultValidate,
                           ),
                         ),
                         Padding(
@@ -326,8 +327,8 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                                 horizontal: Dimensions.PADDING_SIZE_DEFAULT,
                                 vertical: Dimensions.PADDING_SIZE_SMALL),
                             child: customButton('REGISTER >', () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const DashboardView()));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => const DashboardView()));
                               if (registerFormKey.currentState!.validate()) {
                                 Veterinarian vet = Veterinarian(
                                     facilityName: facilityNameController.text,

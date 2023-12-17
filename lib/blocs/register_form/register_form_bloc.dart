@@ -21,8 +21,12 @@ class RegisterFormBloc
         Map<String, dynamic> data = event.formData;
         print(data);
 
-        // User user = await ApiService().registerUser(data) ?? const User();
-        emit(const RegistrationFormSuccess(user: User()));
+        User? user = await ApiService().registerUser(data);
+        if (user != null) {
+          emit(RegistrationFormSuccess(user: user));
+        } else {
+          emit(const RegistrationFormFailure(error: ""));
+        }
       } catch (e) {
         emit(RegistrationFormFailure(error: e.toString()));
       }

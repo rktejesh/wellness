@@ -16,8 +16,9 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DashboardBloc()..add(DashboardFetchData()),
+    return BlocProvider.value(
+      // create: (context) => DashboardBloc()..add(DashboardFetchData()),
+      value: BlocProvider.of<DashboardBloc>(context)..add(DashboardFetchData()),
       child: BlocBuilder<DashboardBloc, DashboardState>(
         builder: (context, state) {
           if (state is DashboardLoading) {

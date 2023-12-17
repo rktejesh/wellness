@@ -25,8 +25,9 @@ class _RegistrationFormSelectionState extends State<RegistrationFormSelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider<RegisterFormBloc>(
-        create: (context) => _registerFormBloc,
+      body: BlocProvider<RegisterFormBloc>.value(
+        // create: (context) => RegisterFormBloc(),
+        value: _registerFormBloc,
         child: Stack(
           alignment: AlignmentDirectional.bottomCenter,
           children: [

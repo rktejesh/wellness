@@ -20,6 +20,12 @@ class SimpleBlocObserver extends BlocObserver {
   }
 
   @override
+  void onClose(BlocBase bloc) {
+    super.onClose(bloc);
+    print(bloc);
+  }
+
+  @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
     print(transition);

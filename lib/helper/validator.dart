@@ -1,4 +1,8 @@
 class CustomValidator {
+  static String? defaultValidate(String? value) {
+    return null;
+  }
+
   static String? validateMobile(String? value) {
     // Indian Mobile number are of 10 digit only
     if (value != null) {
