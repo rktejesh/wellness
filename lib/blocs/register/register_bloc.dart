@@ -12,8 +12,12 @@ class RegisterBloc extends Bloc<RegistrationEvent, RegistrationState> {
       try {
         emit(RegistrationLoading());
         Map<String, dynamic> data = event.formData;
-        User user = await ApiService().registerUser(data) ?? const User();
-        emit(RegistrationSuccess(user: user));
+        User? user = await ApiService().registerUser(data);
+        if (user != null) {
+          emit(RegistrationSuccess(user: user));
+        } else {
+          emit(const RegistrationFailure(error: ""));
+        }
       } catch (e) {
         emit(RegistrationFailure(error: e.toString()));
       }

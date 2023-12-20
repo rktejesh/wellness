@@ -60,6 +60,8 @@ class _RegistrationFormSelectionState extends State<RegistrationFormSelection> {
                         padding: const EdgeInsets.all(
                             Dimensions.PADDING_SIZE_DEFAULT),
                         child: customButton('Veterinarian', () {
+                          _registerFormBloc
+                              .add(RegisterUserTypeSelected("veterinarian"));
                           // Navigator.pushNamed(context, '/vet-register');
                           Navigator.push(
                             context,

@@ -29,6 +29,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             if (state.data == "NA") {
               return const RegistrationFormSelection();
             } else {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.popUntil(context, (route) => route.isFirst);
+              });
               return const DashboardView();
             }
           } else if (state is DashboardFailure) {

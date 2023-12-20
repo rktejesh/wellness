@@ -9,10 +9,10 @@ part 'register_form_state.dart';
 class RegisterFormBloc
     extends Bloc<RegistrationFormEvent, RegistrationFormState> {
   RegisterFormBloc() : super(RegistrationFormInitial()) {
-    String _selectedUserType = '';
+    String selectedUserType = '';
 
     on<RegisterUserTypeSelected>((event, emit) async {
-      _selectedUserType = event.userType;
+      selectedUserType = event.userType;
     });
 
     on<RegisterFormButtonPressed>((event, emit) async {
@@ -21,12 +21,12 @@ class RegisterFormBloc
         Map<String, dynamic> data = event.formData;
         print(data);
 
-        User? user = await ApiService().registerUser(data);
-        if (user != null) {
-          emit(RegistrationFormSuccess(user: user));
-        } else {
-          emit(const RegistrationFormFailure(error: ""));
-        }
+        // String? res = await ApiService().setProfile(data, selectedUserType);
+        // if (res != null) {
+        //   emit(RegistrationFormSuccess(res: res));
+        // } else {
+        //   emit(const RegistrationFormFailure(error: ""));
+        // }
       } catch (e) {
         emit(RegistrationFormFailure(error: e.toString()));
       }

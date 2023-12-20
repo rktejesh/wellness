@@ -3,6 +3,22 @@ class CustomValidator {
     return null;
   }
 
+  static String? validateNumber(String? value) {
+    // Check if the number is empty
+    if (value == null || value.isEmpty) {
+      return 'Please enter your number';
+    }
+
+    // Use a regular expression for basic number validation
+    String numberPattern = r'(^[+]?\d*\.?\d+$)';
+    RegExp regExp = RegExp(numberPattern);
+    if (!regExp.hasMatch(value)) {
+      return 'Please enter a valid number';
+    }
+
+    return null; // Return null if the number is valid
+  }
+
   static String? validateMobile(String? value) {
     // Indian Mobile number are of 10 digit only
     if (value != null) {

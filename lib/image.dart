@@ -12,7 +12,7 @@ import 'package:wellness/services/ui_helper.dart'
     if (dart.library.html) 'package:wellness/services/web_ui_helper.dart';
 import 'package:wellness/upload_files.dart';
 import 'package:wellness/upload_files_data.dart';
-import 'package:wellness/utils/dimensions.dart';
+import 'package:image/image.dart' as ImageHelper;
 
 class ImageUpload extends StatefulWidget {
   const ImageUpload({super.key});
@@ -26,6 +26,8 @@ class _ImageUploadState extends State<ImageUpload> {
   final picker = ImagePicker();
   var formData;
   bool isLoading = false;
+  Uint8List imageBytes = Uint8List(0);
+  Uint8List? pngBytes;
   SnackBar snackBar = SnackBar(
     content: Container(),
   );
@@ -35,6 +37,7 @@ class _ImageUploadState extends State<ImageUpload> {
     final pickedFile = await picker.pickImage(
       source: ImageSource.camera,
       imageQuality: 30,
+      preferredCameraDevice: CameraDevice.rear,
     );
     final imagedata = await pickedFile?.readAsBytes();
     setState(() {
@@ -56,8 +59,6 @@ class _ImageUploadState extends State<ImageUpload> {
       }
     }
   }
-
-  var idcard;
 
   @override
   Widget build(BuildContext context) {
@@ -164,6 +165,10 @@ class _ImageUploadState extends State<ImageUpload> {
                             alignment: Alignment.center,
                             backgroundColor: const Color(0xFF14619C)),
                         onPressed: () async => {
+                          imageBytes = await _imageFile!.readAsBytes(),
+                          pngBytes = ImageHelper.encodePng(
+                              ImageHelper.decodeImage(
+                                  Uint8List.fromList(imageBytes))!),
                           setState(() {
                             isLoading = true;
                           }),
@@ -173,7 +178,7 @@ class _ImageUploadState extends State<ImageUpload> {
                                 'path': 'images',
                                 'files': await MultipartFile.fromFile(
                                     _imageFile!.path,
-                                    filename: "image")
+                                    filename: "image.png")
                               }),
                               response =
                                   await UploadFiles().uploadImage(formData),

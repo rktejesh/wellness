@@ -61,9 +61,10 @@ class ApiService extends ApiInterface {
             <String, String>{
               'accept': 'application/json',
               'content-type': 'application/json',
-              'Authorization': (require != null && require)
-                  ? "Bearer ${ApiInterface.auth!}"
-                  : ""
+              'authorization': "Bearer ${PreferenceUtils.getToken()}"
+              // (require != null && require)
+              // ? "Bearer ${PreferenceUtils.getToken()}"
+              // : "Bearer "
             },
         body: jsonEncode(data));
     return res;
@@ -141,14 +142,15 @@ class ApiService extends ApiInterface {
     }
   }
 
-  Future<String?> setProfile(Map<String, dynamic> data) async {
+  Future<String?> setProfile(Map<String, dynamic> data, String profile) async {
+    Map<String, dynamic> newData = {"profile": profile, "data": data};
     http.Response res = await postApi(
-        url: ApiInterface.baseUrl + EndPoints.getProfile,
-        data: data,
+        url: ApiInterface.baseUrl + EndPoints.setProfile,
+        data: newData,
         require: true);
     Map<String, dynamic> response = _parseBaseResponse(res) ?? {};
-    if (response["entry"].containsKey('role')) {
-      return response['role'].toString();
+    if (response.containsKey('userId')) {
+      return response['userId'].toString();
     } else {
       return null;
     }

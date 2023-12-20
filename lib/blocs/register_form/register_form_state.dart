@@ -12,9 +12,9 @@ class RegistrationFormInitial extends RegistrationFormState {}
 class RegistrationFormLoading extends RegistrationFormState {}
 
 class RegistrationFormSuccess extends RegistrationFormState {
-  final User user;
+  final String res;
   const RegistrationFormSuccess({
-    required this.user,
+    required this.res,
   });
 }
 
