@@ -2,24 +2,24 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-class Veterinarian extends Equatable {
-  final String? facilityName;
+class Trainer extends Equatable {
+  final int? id;
+  final int? horseCount;
   final String? country;
-  final int? veterinariansCount;
-  final String? typeOfFacility;
   final String? city;
   final String? state;
   final String? postalCode;
   final String? firstName;
-  final String? lastName;
+  final dynamic lastName;
   final String? address1;
   final String? address2;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
-  const Veterinarian({
-    this.facilityName,
+  const Trainer({
+    this.id,
+    this.horseCount,
     this.country,
-    this.veterinariansCount,
-    this.typeOfFacility,
     this.city,
     this.state,
     this.postalCode,
@@ -27,27 +27,33 @@ class Veterinarian extends Equatable {
     this.lastName,
     this.address1,
     this.address2,
+    this.createdAt,
+    this.updatedAt,
   });
 
-  factory Veterinarian.fromMap(Map<String, dynamic> data) => Veterinarian(
-        facilityName: data['facility_name'] as String?,
+  factory Trainer.fromMap(Map<String, dynamic> data) => Trainer(
+        id: data['id'] as int?,
+        horseCount: data['horse_count'] as int?,
         country: data['country'] as String?,
-        veterinariansCount: data['veterinarians_count'] as int?,
-        typeOfFacility: data['type_of_facility'] as String?,
         city: data['city'] as String?,
         state: data['state'] as String?,
         postalCode: data['postal_code'] as String?,
         firstName: data['first_name'] as String?,
-        lastName: data['last_name'] as String?,
+        lastName: data['last_name'] as dynamic,
         address1: data['address1'] as String?,
         address2: data['address2'] as String?,
+        createdAt: data['createdAt'] == null
+            ? null
+            : DateTime.parse(data['createdAt'] as String),
+        updatedAt: data['updatedAt'] == null
+            ? null
+            : DateTime.parse(data['updatedAt'] as String),
       );
 
   Map<String, dynamic> toMap() => {
-        'facility_name': facilityName,
+        'id': id,
+        'horse_count': horseCount,
         'country': country,
-        'veterinarians_count': veterinariansCount,
-        'type_of_facility': typeOfFacility,
         'city': city,
         'state': state,
         'postal_code': postalCode,
@@ -55,38 +61,40 @@ class Veterinarian extends Equatable {
         'last_name': lastName,
         'address1': address1,
         'address2': address2,
+        'createdAt': createdAt?.toIso8601String(),
+        'updatedAt': updatedAt?.toIso8601String(),
       };
 
   /// `dart:convert`
   ///
-  /// Parses the string and returns the resulting Json object as [Veterinarian].
-  factory Veterinarian.fromJson(String data) {
-    return Veterinarian.fromMap(json.decode(data) as Map<String, dynamic>);
+  /// Parses the string and returns the resulting Json object as [Trainer].
+  factory Trainer.fromJson(String data) {
+    return Trainer.fromMap(json.decode(data) as Map<String, dynamic>);
   }
 
   /// `dart:convert`
   ///
-  /// Converts [Veterinarian] to a JSON string.
+  /// Converts [Trainer] to a JSON string.
   String toJson() => json.encode(toMap());
 
-  Veterinarian copyWith({
-    String? facilityName,
+  Trainer copyWith({
+    int? id,
+    int? horseCount,
     String? country,
-    int? veterinariansCount,
-    String? typeOfFacility,
     String? city,
     String? state,
     String? postalCode,
     String? firstName,
-    String? lastName,
+    dynamic lastName,
     String? address1,
     String? address2,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
-    return Veterinarian(
-      facilityName: facilityName ?? this.facilityName,
+    return Trainer(
+      id: id ?? this.id,
+      horseCount: horseCount ?? this.horseCount,
       country: country ?? this.country,
-      veterinariansCount: veterinariansCount ?? this.veterinariansCount,
-      typeOfFacility: typeOfFacility ?? this.typeOfFacility,
       city: city ?? this.city,
       state: state ?? this.state,
       postalCode: postalCode ?? this.postalCode,
@@ -94,16 +102,20 @@ class Veterinarian extends Equatable {
       lastName: lastName ?? this.lastName,
       address1: address1 ?? this.address1,
       address2: address2 ?? this.address2,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
   @override
+  bool get stringify => true;
+
+  @override
   List<Object?> get props {
     return [
-      facilityName,
+      id,
+      horseCount,
       country,
-      veterinariansCount,
-      typeOfFacility,
       city,
       state,
       postalCode,
@@ -111,6 +123,8 @@ class Veterinarian extends Equatable {
       lastName,
       address1,
       address2,
+      createdAt,
+      updatedAt,
     ];
   }
 }

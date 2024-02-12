@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wellness/blocs/auth/auth_bloc.dart';
-import 'package:wellness/image.dart';
 import 'package:wellness/utils/dimensions.dart';
+import 'package:wellness/views/base/custom_drawer.dart';
 import 'package:wellness/views/screens/dashboard/circular_icon_button.dart';
-import 'package:wellness/views/screens/instructions/instructions.dart';
+import 'package:wellness/views/screens/instructions/timer_screen.dart';
 import 'package:wellness/views/screens/test/test_dashboard.dart';
 
 class DashboardView extends StatelessWidget {
@@ -18,43 +18,10 @@ class DashboardView extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xFF0070bc), Color(0xFF015a9f)])),
+              colors: [Color(0xFF884ad1), Color.fromARGB(255, 123, 64, 189)])),
       child: Scaffold(
         appBar: AppBar(),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    height: MediaQuery.of(context).size.height * 0.4,
-                  ),
-                ),
-              ),
-              ListTile(
-                title: const Text('Profile'),
-                onTap: () {},
-              ),
-              ListTile(
-                title: const Text('My Horses'),
-                onTap: () {},
-              ),
-              ListTile(
-                title: const Text('Logout'),
-                onTap: () {
-                  BlocProvider.of<AuthBloc>(context).add(LoggedOut());
-                },
-              ),
-            ],
-          ),
-        ),
+        drawer: customDrawer(context),
         backgroundColor: Colors.transparent,
         body: Stack(
           children: [

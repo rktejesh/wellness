@@ -7,7 +7,6 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:wellness/blocs/dashboard/dashboard_bloc.dart';
 import 'package:wellness/blocs/register_form/register_form_bloc.dart';
 import 'package:wellness/data/model/profile.dart';
-import 'package:wellness/data/model/veterinarian.dart';
 import 'package:wellness/utils/dimensions.dart';
 import 'package:wellness/views/base/custom_button.dart';
 import 'package:wellness/views/base/custom_text_field.dart';
@@ -140,6 +139,7 @@ class _OwnerRegisterFormState extends State<OwnerRegisterForm> {
                           child: DropdownButton<int>(
                             value: selectedValue,
                             isExpanded: true,
+                            hint: const Text('Select Horse Count'),
                             items: List.generate(100, (index) => index + 1)
                                 .map((int value) {
                               return DropdownMenuItem<int>(
@@ -310,11 +310,11 @@ class _OwnerRegisterFormState extends State<OwnerRegisterForm> {
                                 horizontal: Dimensions.PADDING_SIZE_DEFAULT,
                                 vertical: Dimensions.PADDING_SIZE_SMALL),
                             child: customButton('REGISTER >', () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const DashboardView()));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => const DashboardView()));
                               if (registerFormKey.currentState!.validate()) {
                                 Map<String, dynamic> mp = profile.toMap();
-                                mp.addAll({});
+                                mp.addAll({"horse_count": selectedValue});
                                 context.read<RegisterFormBloc>().add(
                                     RegisterFormButtonPressed(formData: mp));
                               }

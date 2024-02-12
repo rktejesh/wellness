@@ -28,5 +28,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoginFailure(error: e.toString()));
       }
     });
+    // on<ResetPassword>((event, emit) async {
+    //   try {
+    //     emit(LoginLoading());
+    //     Map<String, dynamic> data = {
+    //       'identifier': event.email,
+    //     };
+    //     User? user = await ApiService().loginUser(data);
+    //     if (user != null) {
+    //       emit(LoginSuccess(user: user));
+    //     } else {
+    //       emit(const LoginFailure(error: "Login failed"));
+    //     }
+    //   } catch (e) {
+    //     emit(LoginFailure(error: e.toString()));
+    //   }
+    // });
   }
 }

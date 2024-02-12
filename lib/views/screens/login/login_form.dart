@@ -8,6 +8,7 @@ import 'package:wellness/helper/validator.dart';
 import 'package:wellness/utils/dimensions.dart';
 import 'package:wellness/views/base/custom_button.dart';
 import 'package:wellness/views/base/custom_text_field.dart';
+import 'package:wellness/views/screens/login/forgot_password.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -138,6 +139,28 @@ class _LoginFormState extends State<LoginForm> {
                               //     child: const Text("Get OTP"),
                               //   ),
                               // ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal:
+                                        Dimensions.PADDING_SIZE_DEFAULT),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: 'Forgot password? ',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blue,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () => Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const ForgotPassword())),
+                                    ),
+                                  ),
+                                ),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(
                                     Dimensions.PADDING_SIZE_DEFAULT),

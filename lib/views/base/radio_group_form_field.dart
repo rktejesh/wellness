@@ -21,8 +21,11 @@ class RadioGroupFormField extends FormField<int> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding:
-                      const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
+                  padding: const EdgeInsets.only(
+                    top: Dimensions.PADDING_SIZE_DEFAULT,
+                    left: Dimensions.PADDING_SIZE_DEFAULT,
+                    right: Dimensions.PADDING_SIZE_DEFAULT,
+                  ),
                   child: Text(
                     questionText,
                     style: TextStyle(

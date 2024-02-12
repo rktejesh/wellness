@@ -8,7 +8,6 @@ import 'package:wellness/blocs/dashboard/dashboard_bloc.dart';
 import 'package:wellness/blocs/register/register_bloc.dart';
 import 'package:wellness/blocs/register_form/register_form_bloc.dart';
 import 'package:wellness/data/model/profile.dart';
-import 'package:wellness/data/model/veterinarian.dart';
 import 'package:wellness/helper/validator.dart';
 import 'package:wellness/image.dart';
 import 'package:wellness/utils/dimensions.dart';
@@ -189,9 +188,9 @@ class _VeterinarianRegisterFormState extends State<VeterinarianRegisterForm> {
                                 //     typeOfFacility: dropdownValue);
                                 Map<String, dynamic> mp = profile.toMap();
                                 mp.addAll({
-                                  "facilityName": facilityNameController.text,
-                                  "veterinariansCount": selectedValue,
-                                  "typeOfFacility": dropdownValue
+                                  "facility_name": facilityNameController.text,
+                                  "veterinarians_count": selectedValue,
+                                  "type_of_facility": dropdownValue
                                 });
                                 context.read<RegisterFormBloc>().add(
                                     RegisterFormButtonPressed(formData: mp));

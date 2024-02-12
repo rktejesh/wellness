@@ -14,3 +14,12 @@ class LoginButtonPressed extends LoginEvent {
   @override
   List<Object> get props => [email, password];
 }
+
+// class ResetPassword extends LoginEvent {
+//   final String email;
+
+//   ResetPassword({required this.email});
+
+//   @override
+//   List<Object> get props => [email];
+// }

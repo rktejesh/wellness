@@ -7,10 +7,8 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:wellness/blocs/dashboard/dashboard_bloc.dart';
 import 'package:wellness/blocs/register_form/register_form_bloc.dart';
 import 'package:wellness/data/model/profile.dart';
-import 'package:wellness/data/model/veterinarian.dart';
 import 'package:wellness/utils/dimensions.dart';
 import 'package:wellness/views/base/custom_button.dart';
-import 'package:wellness/views/base/custom_text_field.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:wellness/views/screens/dashboard/dashboard_view.dart';
 import 'package:wellness/views/screens/register/profile_register_form.dart';
@@ -44,7 +42,8 @@ class _BreederRegisterFormState extends State<BreederRegisterForm> {
   final GoogleMapsPlaces _places =
       GoogleMapsPlaces(apiKey: "AIzaSyAPNs4LbF8a3SJSG7O6O9Ue_M61inmaBe0");
   bool showLocLoader = true;
-  int selectedValue = 1;
+  int selectedValueFoals = 1;
+  int selectedValueBreedingHorses = 1;
   Profile profile = Profile();
 
   void updateProfile(Profile profile) {
@@ -140,7 +139,7 @@ class _BreederRegisterFormState extends State<BreederRegisterForm> {
                           padding: const EdgeInsets.all(
                               Dimensions.PADDING_SIZE_DEFAULT),
                           child: DropdownButton<int>(
-                            value: selectedValue,
+                            value: selectedValueBreedingHorses,
                             isExpanded: true,
                             items: List.generate(100, (index) => index + 1)
                                 .map((int value) {
@@ -151,7 +150,7 @@ class _BreederRegisterFormState extends State<BreederRegisterForm> {
                             }).toList(),
                             onChanged: (int? newValue) {
                               setState(() {
-                                selectedValue = newValue ?? 1;
+                                selectedValueBreedingHorses = newValue ?? 1;
                               });
                             },
                           ),
@@ -167,7 +166,7 @@ class _BreederRegisterFormState extends State<BreederRegisterForm> {
                           padding: const EdgeInsets.all(
                               Dimensions.PADDING_SIZE_DEFAULT),
                           child: DropdownButton<int>(
-                            value: selectedValue,
+                            value: selectedValueFoals,
                             isExpanded: true,
                             items: List.generate(100, (index) => index + 1)
                                 .map((int value) {
@@ -178,7 +177,7 @@ class _BreederRegisterFormState extends State<BreederRegisterForm> {
                             }).toList(),
                             onChanged: (int? newValue) {
                               setState(() {
-                                selectedValue = newValue ?? 1;
+                                selectedValueFoals = newValue ?? 1;
                               });
                             },
                           ),
@@ -337,11 +336,15 @@ class _BreederRegisterFormState extends State<BreederRegisterForm> {
                                 horizontal: Dimensions.PADDING_SIZE_DEFAULT,
                                 vertical: Dimensions.PADDING_SIZE_SMALL),
                             child: customButton('REGISTER >', () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const DashboardView()));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => const DashboardView()));
                               if (registerFormKey.currentState!.validate()) {
                                 Map<String, dynamic> mp = profile.toMap();
-                                mp.addAll({});
+                                mp.addAll({
+                                  "breeding_horses":
+                                      selectedValueBreedingHorses,
+                                  "fouls": selectedValueFoals
+                                });
                                 context.read<RegisterFormBloc>().add(
                                     RegisterFormButtonPressed(formData: mp));
                               }

@@ -5,7 +5,7 @@ List<PlatformUiSettings>? buildUiSettings(BuildContext context) {
   return [
     AndroidUiSettings(
         toolbarTitle: 'Edit',
-        toolbarColor: const Color(0Xff15609c),
+        toolbarColor: const Color(0xff884ad1),
         toolbarWidgetColor: Colors.white,
         initAspectRatio: CropAspectRatioPreset.original,
         lockAspectRatio: false),

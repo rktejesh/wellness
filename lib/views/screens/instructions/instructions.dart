@@ -1,10 +1,20 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:wellness/image.dart';
+import 'package:flutter/services.dart';
+import 'package:wellness/matching_view.dart';
 import 'package:wellness/utils/dimensions.dart';
 import 'package:wellness/views/base/custom_button.dart';
 
 class InstructionScreen extends StatelessWidget {
-  const InstructionScreen({super.key});
+  final int testId;
+  final int timeleft;
+
+  const InstructionScreen({
+    super.key,
+    required this.testId,
+    required this.timeleft,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +59,18 @@ class InstructionScreen extends StatelessWidget {
               child: Text(
                   "Step 3: Submit once final copy is completed to get the results"),
             ),
-            customButton("Take an image ", () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const ImageUpload()));
+            customButton("Take an image ", () async {
+              await rootBundle.load('assets/1.png').then((value) {
+                Uint8List data = value.buffer.asUint8List();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => MatchingView(
+                      testId: testId,
+                      target: data,
+                    ),
+                  ),
+                );
+              });
             })
           ],
         ),

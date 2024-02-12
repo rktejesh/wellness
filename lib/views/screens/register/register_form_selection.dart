@@ -78,6 +78,8 @@ class _RegistrationFormSelectionState extends State<RegistrationFormSelection> {
                             Dimensions.PADDING_SIZE_DEFAULT),
                         child: customButton('Horse Owner', () {
                           // Navigator.pushNamed(context, '/owner-register');
+                          _registerFormBloc
+                              .add(RegisterUserTypeSelected("owner"));
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (contextLoginScreen) {
@@ -93,6 +95,8 @@ class _RegistrationFormSelectionState extends State<RegistrationFormSelection> {
                             Dimensions.PADDING_SIZE_DEFAULT),
                         child: customButton('Horse Trainer', () {
                           // Navigator.pushNamed(context, '/trainer-register');
+                          _registerFormBloc
+                              .add(RegisterUserTypeSelected("trainer"));
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (contextLoginScreen) {
@@ -108,6 +112,8 @@ class _RegistrationFormSelectionState extends State<RegistrationFormSelection> {
                             Dimensions.PADDING_SIZE_DEFAULT),
                         child: customButton('Horse Breeder', () {
                           // Navigator.pushNamed(context, '/breeder-register');
+                          _registerFormBloc
+                              .add(RegisterUserTypeSelected("breeder"));
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (contextLoginScreen) {

@@ -13,9 +13,13 @@ import 'package:wellness/services/ui_helper.dart'
 import 'package:wellness/upload_files.dart';
 import 'package:wellness/upload_files_data.dart';
 import 'package:image/image.dart' as ImageHelper;
+import 'package:wellness/views/base/custom_button.dart';
 
 class ImageUpload extends StatefulWidget {
-  const ImageUpload({super.key});
+  final String horseId;
+  final String preTestId;
+  const ImageUpload(
+      {super.key, required this.horseId, required this.preTestId});
   @override
   State<ImageUpload> createState() => _ImageUploadState();
 }
@@ -66,7 +70,7 @@ class _ImageUploadState extends State<ImageUpload> {
     return Scaffold(
       appBar: AppBar(
         // toolbarHeight: 56.h,
-        // backgroundColor: const Color(0Xff15609c),
+        // backgroundColor: const Color(0xff884ad1),
         centerTitle: true,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -88,7 +92,7 @@ class _ImageUploadState extends State<ImageUpload> {
                     Text(
                       "Capture Your Image",
                       style: TextStyle(
-                        color: const Color(0Xff15609c),
+                        color: const Color(0xff884ad1),
                         fontSize: 19.h,
                       ),
                     ),
@@ -105,7 +109,7 @@ class _ImageUploadState extends State<ImageUpload> {
                                 onPressed: pickImage,
                                 child: Icon(
                                   Icons.add_a_photo,
-                                  color: const Color(0Xff15609c),
+                                  color: const Color(0xff884ad1),
                                   size: 50.sp,
                                   semanticLabel: "Take Picture",
                                 ),
@@ -123,7 +127,7 @@ class _ImageUploadState extends State<ImageUpload> {
                                 GestureDetector(
                                   child: Icon(
                                     Icons.add_a_photo,
-                                    color: const Color(0Xff15609c),
+                                    color: const Color(0xff884ad1),
                                     size: 30.sp,
                                   ),
                                   onTap: () {
@@ -138,7 +142,7 @@ class _ImageUploadState extends State<ImageUpload> {
                                 GestureDetector(
                                   child: Icon(
                                     Icons.edit,
-                                    color: const Color(0Xff15609c),
+                                    color: const Color(0xff884ad1),
                                     size: 30.sp,
                                   ),
                                   onTap: () {
@@ -152,65 +156,108 @@ class _ImageUploadState extends State<ImageUpload> {
                     SizedBox(
                       height: 60.h,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25.w),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            padding: const EdgeInsets.all(12),
-                            minimumSize:
-                                Size(MediaQuery.of(context).size.width, 38.h),
-                            alignment: Alignment.center,
-                            backgroundColor: const Color(0xFF14619C)),
-                        onPressed: () async => {
-                          imageBytes = await _imageFile!.readAsBytes(),
-                          pngBytes = ImageHelper.encodePng(
-                              ImageHelper.decodeImage(
-                                  Uint8List.fromList(imageBytes))!),
-                          setState(() {
-                            isLoading = true;
-                          }),
-                          if (_imageFile != null)
-                            {
-                              formData = FormData.fromMap({
-                                'path': 'images',
-                                'files': await MultipartFile.fromFile(
-                                    _imageFile!.path,
-                                    filename: "image.png")
-                              }),
-                              response =
-                                  await UploadFiles().uploadImage(formData),
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(horizontal: 25.w),
+                    //   child: ElevatedButton(
+                    //     style: ElevatedButton.styleFrom(
+                    //         shape: RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.circular(15.0),
+                    //         ),
+                    //         padding: const EdgeInsets.all(12),
+                    //         minimumSize:
+                    //             Size(MediaQuery.of(context).size.width, 38.h),
+                    //         alignment: Alignment.center,
+                    //         backgroundColor: const Color(0xFF14619C)),
+                    //     onPressed: () async => {
+                    //       imageBytes = await _imageFile!.readAsBytes(),
+                    //       pngBytes = ImageHelper.encodePng(
+                    //           ImageHelper.decodeImage(
+                    //               Uint8List.fromList(imageBytes))!),
+                    //       setState(() {
+                    //         isLoading = true;
+                    //       }),
+                    //       if (_imageFile != null)
+                    //         {
+                    //           formData = FormData.fromMap({
+                    //             'path': 'images',
+                    //             'files': await MultipartFile.fromFile(
+                    //                 _imageFile!.path,
+                    //                 filename: "image.png")
+                    //           }),
+                    //           response =
+                    //               await UploadFiles().uploadImage(formData),
+                    //           setState(() {
+                    //             isLoading = false;
+                    //           }),
+                    //           Navigator.of(context).push(
+                    //             MaterialPageRoute(
+                    //                 builder: (context) =>
+                    //                     ImagePlaceholder(res: response)),
+                    //           )
+                    //         }
+                    //       else
+                    //         {
+                    //           setState(() {
+                    //             isLoading = false;
+                    //           }),
+                    //           ScaffoldMessenger.of(context).showSnackBar(
+                    //             const SnackBar(
+                    //                 content: Text('Image not selected')),
+                    //           ),
+                    //         }
+                    //     },
+                    //     child: Text(
+                    //       'Submit',
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontSize: 16.sp,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    customButton(
+                        "Submit",
+                        () async => {
                               setState(() {
-                                isLoading = false;
+                                isLoading = true;
                               }),
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ImagePlaceholder(res: response)),
-                              )
-                            }
-                          else
-                            {
-                              setState(() {
-                                isLoading = false;
-                              }),
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Image not selected')),
-                              ),
-                            }
-                        },
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
-                          ),
-                        ),
-                      ),
-                    ),
+                              if (_imageFile != null)
+                                {
+                                  imageBytes = await _imageFile!.readAsBytes(),
+                                  pngBytes = ImageHelper.encodePng(
+                                      ImageHelper.decodeImage(
+                                          Uint8List.fromList(imageBytes))!),
+                                  formData = FormData.fromMap({
+                                    'path': 'images',
+                                    'files': await MultipartFile.fromFile(
+                                        _imageFile!.path,
+                                        filename: "image.png")
+                                  }),
+                                  response =
+                                      await UploadFiles().uploadImage(formData),
+                                  setState(() {
+                                    isLoading = false;
+                                  }),
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) => ImagePlaceholder(
+                                              res: response,
+                                              testId:
+                                                  int.parse(widget.preTestId),
+                                            )),
+                                  )
+                                }
+                              else
+                                {
+                                  setState(() {
+                                    isLoading = false;
+                                  }),
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Image not selected')),
+                                  ),
+                                }
+                            })
                     // const Padding(
                     //   padding:
                     //       EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_LARGE),

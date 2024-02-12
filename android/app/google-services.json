@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "578699712798",
+    "firebase_url": "https://wellness-4008f-default-rtdb.firebaseio.com",
+    "project_id": "wellness-4008f",
+    "storage_bucket": "wellness-4008f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578699712798:android:b79ca1a1d459ae2e34d10f",
+        "android_client_info": {
+          "package_name": "com.flutter.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "578699712798-jgctoa0l88l0i9k6tb7j7hm9jose2n25.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNRX6C_daUYyq1Cmyd-5viK3I6eHg93is"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "578699712798-jgctoa0l88l0i9k6tb7j7hm9jose2n25.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578699712798:android:b3a19ecef755857534d10f",
+        "android_client_info": {
+          "package_name": "org.netgains.wellness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "578699712798-jgctoa0l88l0i9k6tb7j7hm9jose2n25.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNRX6C_daUYyq1Cmyd-5viK3I6eHg93is"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "578699712798-jgctoa0l88l0i9k6tb7j7hm9jose2n25.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

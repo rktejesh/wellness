@@ -19,12 +19,12 @@ class Profile {
       'country': country,
       'city': city,
       'state': state,
-      'postalCode': postalCode,
-      'firstName': firstName,
-      'lastName': lastName,
+      'postal_code': postalCode,
+      'first_name': firstName,
+      'last_name': lastName,
       'address1': address1,
       'address2': address2,
-      'phoneNumber': phoneNumber,
+      'phone_number': phoneNumber,
       'countryCode': countryCode,
     };
   }

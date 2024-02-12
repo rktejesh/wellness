@@ -1,0 +1,17 @@
+// (launch.json)
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach: Design for iPad",
+            "request": "attach",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--app-id",
+                "org.netgains"
+            ],
+            "deviceId": "designed-for-ipad",
+        }
+    ]
+}

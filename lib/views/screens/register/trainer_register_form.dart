@@ -7,7 +7,6 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:wellness/blocs/dashboard/dashboard_bloc.dart';
 import 'package:wellness/blocs/register/register_bloc.dart';
 import 'package:wellness/blocs/register_form/register_form_bloc.dart';
-import 'package:wellness/data/model/veterinarian.dart';
 import 'package:wellness/helper/validator.dart';
 import 'package:wellness/image.dart';
 import 'package:wellness/utils/dimensions.dart';
@@ -316,11 +315,11 @@ class _TrainerRegisterFormState extends State<TrainerRegisterForm> {
                                 horizontal: Dimensions.PADDING_SIZE_DEFAULT,
                                 vertical: Dimensions.PADDING_SIZE_SMALL),
                             child: customButton('REGISTER >', () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const DashboardView()));
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (context) => const DashboardView()));
                               if (registerFormKey.currentState!.validate()) {
                                 Map<String, dynamic> mp = profile.toMap();
-                                mp.addAll({});
+                                mp.addAll({"horse_count": selectedValue});
                                 context.read<RegisterFormBloc>().add(
                                     RegisterFormButtonPressed(formData: mp));
                               }

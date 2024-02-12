@@ -82,16 +82,16 @@ class _RegisterFormState extends State<RegisterForm> {
                                     fn: CustomValidator.validateEmail,
                                     obscure: false),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(
-                                    Dimensions.PADDING_SIZE_DEFAULT),
-                                child: CustomTextFormField(
-                                    title: 'FULL NAME',
-                                    textEditingController: usernameController,
-                                    textInputType: TextInputType.name,
-                                    // fn: CustomValidator.validateEmail,
-                                    obscure: false),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.all(
+                              //       Dimensions.PADDING_SIZE_DEFAULT),
+                              //   child: CustomTextFormField(
+                              //       title: 'FULL NAME',
+                              //       textEditingController: usernameController,
+                              //       textInputType: TextInputType.name,
+                              // fn: CustomValidator.validateEmail,
+                              //       obscure: false),
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.all(
                                     Dimensions.PADDING_SIZE_DEFAULT),
@@ -135,7 +135,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                         .add(RegisterButtonPressed(formData: {
                                           "email": emailController.text,
                                           "password": passwordController.text,
-                                          "username": usernameController.text
+                                          "username": emailController.text
                                         }));
                                   }
                                 }),
